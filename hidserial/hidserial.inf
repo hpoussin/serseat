@@ -1,0 +1,58 @@
+[Version]
+Signature   = "$Windows NT$"
+Class       = HIDClass
+ClassGuid   = {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Provider    = %ReactOS%
+LayoutFile  = layout.inf
+CatalogFile =
+DriverVer   = 10/17/2017,1.0.0.0
+PnpLockDown = 1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDiskNames]
+1 = %Disk1%
+
+[SourceDiskFiles]
+hidserial.inf = 1
+hidserial.sys = 1
+
+[Manufacturer]
+%StdMfg% = StdMfg
+
+[StdMfg]
+%SerialHID_DeviceDesc% = SerialHID_Inst,SERIAL\HID_DEVICE
+
+[DefaultInstall.NT]
+CopyFiles = DefaultInstall_CopyFiles.NT
+
+[DefaultInstall_CopyFiles.NT]
+hidserial.sys
+
+[SerialHID_Inst.NT]
+CopyFiles = SerialHID_Inst_CopyFiles.NT
+
+[SerialHID_Inst_CopyFiles.NT]
+hidserial.sys
+hidclass.sys
+hidparse.sys
+
+[SerialHID_Inst.NT.Services]
+AddService = hidserial, 0x00000002, SerialHID_Service_Inst
+
+[SerialHID_Service_Inst]
+DisplayName   = %SerialHID_ServiceDesc%
+ServiceType   = 1   ; SERVICE_KERNEL_DRIVER
+StartType     = 3   ; SERVICE_DEMAND_START
+ErrorControl  = 1   ; SERVICE_ERROR_NORMAL
+ServiceBinary = %12%\hidserial.sys
+LoadOrderGroup = Extended Base
+
+[Strings]
+ReactOS               = "ReactOS Team"
+Disk1 = "Console on serial driver disk"
+StdMfg                = "(Standard Human Interface Devices)"
+SerialHID_ServiceDesc = "HID Device on serial port"
+SerialHID_DeviceDesc  = "Serial Human Interface Device"
+

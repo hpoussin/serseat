@@ -1,0 +1,46 @@
+[Version]
+Signature   = "$Windows NT$"
+Class       = Ports
+ClassGUID   = {4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider    = %ReactOS%
+LayoutFile  = layout.inf
+CatalogFile =
+DriverVer   = 10/17/2017,1.0.0.0
+PnpLockDown = 1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDiskNames]
+1 = %Disk1%
+
+[SourceDiskFiles]
+serseat.inf = 1
+serseat.sys = 1
+
+[DefaultInstall.NT]
+CopyFiles = DefaultInstall_CopyFiles.NT
+AddReg = DefaultInstall_AddReg.NT
+CopyINF = hidserial.inf
+
+[DefaultInstall_CopyFiles.NT]
+serseat.sys
+hidserial.sys
+
+[DefaultInstall.NT.Services]
+AddService = serseat,,Serseat_Service_Inst
+
+[DefaultInstall_AddReg.NT]
+HKLM, "System\CurrentControlSet\Control\Class\{4D36E978-E325-11CE-BFC1-08002BE10318}", "UpperFilters", 0x00010008, "serseat"
+
+[Serseat_Service_Inst]
+DisplayName   = %Serseat_ServiceDesc%
+ServiceType   = 1   ; SERVICE_KERNEL_DRIVER
+StartType     = 3   ; SERVICE_DEMAND_START
+ErrorControl  = 1   ; SERVICE_ERROR_NORMAL
+ServiceBinary = %12%\serseat.sys
+
+[Strings]
+ReactOS = "ReactOS Team"
+Disk1 = "Console on serial driver disk"
+Serseat_ServiceDesc = "Console on serial port"
